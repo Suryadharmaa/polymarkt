@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BTC Signal · AI-Powered Trading Intelligence</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════ -->
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">BTC<em>Signal</em></span>
+      </div>
+      <div class="header-meta">
+        <span class="timeframe-badge">M5</span>
+        <div class="live-dot-wrap">
+          <span class="live-dot" id="liveDot"></span>
+          <span class="live-label">LIVE</span>
+        </div>
+        <div class="clock" id="clock">--:--:--</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       API KEY SETUP BANNER
+  ═══════════════════════════════════════════════ -->
+
+  <div class="api-banner" id="apiBanner">
+    <div class="api-banner-inner">
+      <span class="api-banner-icon">🔑</span>
+      <span>Groq API key required for AI signals</span>
+      <input
+        type="password"
+        id="apiKeyInput"
+        placeholder="gsk_xxxxxxxxxxxxxxxxxxxxx"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button id="saveKeyBtn" class="btn-save">Save &amp; Start</button>
+      <button id="clearKeyBtn" class="btn-clear" style="display:none">Clear Key</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN GRID
+  ═══════════════════════════════════════════════ -->
+
+  <main class="main-grid">
+
+```
+<!-- ── LEFT COLUMN ── -->
+<div class="col-left">
+
+  <!-- BTC Price Card -->
+  <section class="card card-price">
+    <div class="card-label">BTC / USDT</div>
+    <div class="price-row">
+      <span class="price-value" id="btcPrice">$——</span>
+      <span class="price-change" id="priceChange">—</span>
+    </div>
+    <div class="price-sub">
+      <span>24h High: <b id="high24">—</b></span>
+      <span>24h Low: <b id="low24">—</b></span>
+      <span>Vol: <b id="vol24">—</b></span>
+    </div>
+  </section>
+
+  <!-- Mini Chart -->
+  <section class="card card-chart">
+    <div class="card-label">
+      Price (M5 · last 20 candles)
+      <span class="card-label-right" id="chartStatus">loading…</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="btcChart"></canvas>
+    </div>
+  </section>
+
+  <!-- Momentum Metrics -->
+  <section class="card card-metrics">
+    <div class="card-label">Market Metrics</div>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-label">Momentum</div>
+        <div class="metric-value" id="metMomentum">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Volatility (ATR)</div>
+        <div class="metric-value" id="metVolatility">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Δ Last candle</div>
+        <div class="metric-value" id="metDelta">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Trend slope</div>
+        <div class="metric-value" id="metSlope">—</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── CENTER COLUMN ── -->
+<div class="col-center">
+
+  <!-- AI Signal Panel -->
+  <section class="card card-signal" id="signalCard">
+    <div class="card-label">AI Signal <span class="card-label-right" id="signalAge">—</span></div>
+    <div class="signal-main" id="signalMain">
+      <div class="signal-icon" id="signalIcon">—</div>
+      <div class="signal-direction" id="signalDirection">WAITING</div>
+    </div>
+    <div class="signal-confidence-row">
+      <span class="signal-conf-label">Confidence</span>
+      <div class="conf-bar-wrap">
+        <div class="conf-bar" id="confBar" style="width:0%"></div>
+      </div>
+      <span class="signal-conf-pct" id="confPct">—%</span>
+    </div>
+    <div class="signal-reasoning" id="signalReasoning">
+      Waiting for first AI analysis…
+    </div>
+    <div class="signal-loader" id="signalLoader">
+      <span class="loader-ring"></span>
+      <span>Querying Groq…</span>
+    </div>
+  </section>
+
+  <!-- Signal History -->
+  <section class="card card-history">
+    <div class="card-label">Signal History <span class="card-label-right">last 10</span></div>
+    <div class="history-list" id="historyList">
+      <div class="history-empty">No signals yet</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── RIGHT COLUMN ── -->
+<div class="col-right">
+
+  <!-- Polymarket Embed -->
+  <section class="card card-polymarket">
+    <div class="card-label">Polymarket Sentiment</div>
+    <div class="polymarket-wrap">
+
+      <!-- ──────────────────────────────────────
+           REQUIRED POLYMARKET EMBED (DO NOT MODIFY)
+      ────────────────────────────────────── -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Bitcoin Up or Down - May 1, 3:50AM-3:55AM ET",
+        "description": "Prediction market: Up 51% · Down 50% on Polymarket.",
+        "url": "https://polymarket.com/event/btc-updown-5m-1777621800",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Polymarket",
+          "url": "https://polymarket.com"
+        }
+      }
+      </script>
+      <figure
+        class="polymarket-embed"
+        id="polymarket-btc-updown-5m-1777621800"
+        aria-label="Polymarket prediction market: Bitcoin Up or Down - May 1, 3:50AM-3:55AM ET"
+        itemscope
+        itemtype="https://schema.org/WebPage"
+        style="position:relative;display:inline-block;margin:0">
+        <iframe
+          title="Bitcoin Up or Down - May 1, 3:50AM-3:55AM ET — Polymarket Prediction Market"
+          src="https://embed.polymarket.com/market?market=btc-updown-5m-1777621800&theme=dark&liveactivity=true&border=true&height=300"
+          width="400"
+          height="300"
+          frameborder="0"
+          allowtransparency="true">
+        </iframe>
+        <a href="https://polymarket.com/event/btc-updown-5m-1777621800"
+          aria-label="View on Polymarket"
+          target="_blank"
+          rel="noopener"
+          style="position:absolute;top:16px;right:20px;width:120px;height:24px;z-index:10">
+        </a>
+        <figcaption style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
+          <strong>Bitcoin Up or Down - May 1, 3:50AM-3:55AM ET</strong><br>
+          Up 51% · Down 50%<br>
+          <a href="https://polymarket.com/event/btc-updown-5m-1777621800">
+            View full market &amp; trade on Polymarket
+          </a>
+        </figcaption>
+      </figure>
+      <!-- ──────────────────────────────────────
+           END POLYMARKET EMBED
+      ────────────────────────────────────── -->
+
+    </div>
+
+    <!-- Inferred sentiment overlay -->
+    <div class="pm-sentiment-row">
+      <div class="pm-sent pm-sent-up">
+        <span class="pm-sent-label">UP</span>
+        <span class="pm-sent-pct" id="pmUp">51%</span>
+      </div>
+      <div class="pm-sent-divider"></div>
+      <div class="pm-sent pm-sent-down">
+        <span class="pm-sent-label">DOWN</span>
+        <span class="pm-sent-pct" id="pmDown">50%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Refresh Control -->
+  <section class="card card-controls">
+    <div class="card-label">Controls</div>
+    <div class="controls-row">
+      <label class="control-label">Refresh every</label>
+      <select id="refreshInterval" class="select-interval">
+        <option value="5000">5 s</option>
+        <option value="10000" selected>10 s</option>
+        <option value="30000">30 s</option>
+        <option value="60000">60 s</option>
+      </select>
+      <button id="refreshNow" class="btn-refresh">↻ Now</button>
+    </div>
+    <div class="controls-row">
+      <label class="control-label">AI every</label>
+      <select id="groqInterval" class="select-interval">
+        <option value="30000">30 s</option>
+        <option value="60000" selected>60 s</option>
+        <option value="120000">2 min</option>
+      </select>
+    </div>
+    <div class="next-update-row">
+      Next signal in <span id="nextSignalCountdown">—s</span>
+    </div>
+  </section>
+
+</div>
+```
+
+  </main>
+
+  <!-- Footer -->
+
+  <footer class="site-footer">
+    <span>BTC Signal · AI powered by <a href="https://groq.com" target="_blank" rel="noopener">Groq</a></span>
+    <span>Market data: Binance Public API · Not financial advice</span>
+  </footer>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
