@@ -1,0 +1,678 @@
+/* ═══════════════════════════════════════════════════════
+   BTC Signal · style.css
+   Aesthetic: Industrial terminal · Phosphor-green accents
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
+
+/* ── Reset & variables ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #080c0f;
+  --bg2:        #0d1318;
+  --bg3:        #111820;
+  --border:     #1e2d3a;
+  --border2:    #243544;
+
+  --green:      #00ff88;
+  --green-dim:  #00cc6a;
+  --green-glow: rgba(0,255,136,0.18);
+  --red:        #ff3d5a;
+  --red-dim:    #cc2f47;
+  --red-glow:   rgba(255,61,90,0.18);
+  --amber:      #ffb020;
+  --cyan:       #00d4ff;
+
+  --text:       #c8dae8;
+  --text-dim:   #607585;
+  --text-faint: #354550;
+
+  --font-mono:  'Share Tech Mono', monospace;
+  --font-ui:    'Barlow Condensed', sans-serif;
+  --font-body:  'Barlow', sans-serif;
+
+  --radius:     4px;
+  --radius-lg:  8px;
+  --card-pad:   18px;
+}
+
+html { font-size: 14px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.06) 2px,
+    rgba(0,0,0,0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Header ── */
+.site-header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-weight: 900;
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.logo-icon {
+  color: var(--green);
+  font-size: 1.3rem;
+  filter: drop-shadow(0 0 8px var(--green));
+}
+.logo em { color: var(--green); font-style: normal; }
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.timeframe-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--amber);
+  border: 1px solid var(--amber);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.1em;
+}
+
+.live-dot-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  letter-spacing: 0.12em;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.clock {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+/* ── API Banner ── */
+.api-banner {
+  background: linear-gradient(90deg, #0d1318 0%, #0f1c26 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+}
+
+.api-banner-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.api-banner-icon { font-size: 1rem; }
+
+.api-banner span:nth-child(2) {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+#apiKeyInput {
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s;
+}
+#apiKeyInput:focus { border-color: var(--green); }
+
+.btn-save, .btn-clear, .btn-refresh {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-save {
+  background: var(--green);
+  color: #000;
+}
+.btn-save:hover { background: var(--green-dim); }
+
+.btn-clear {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+.btn-clear:hover { background: var(--red-glow); }
+
+.btn-refresh {
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  padding: 6px 14px;
+}
+.btn-refresh:hover { background: rgba(0,212,255,0.1); }
+
+/* ── Main Grid ── */
+.main-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1fr 320px 420px;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .main-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .col-right { grid-column: 1 / -1; }
+}
+
+@media (max-width: 700px) {
+  .main-grid { grid-template-columns: 1fr; padding: 12px; }
+}
+
+/* ── Card base ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--card-pad);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top-left corner accent */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 2px;
+  background: var(--green);
+  border-radius: 0 0 2px 0;
+}
+
+.card-label {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-label-right {
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: none;
+}
+
+/* ── Price Card ── */
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.price-value {
+  font-family: var(--font-ui);
+  font-weight: 900;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.01em;
+  transition: color 0.3s;
+}
+
+.price-change {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.price-change.up { color: var(--green); }
+.price-change.down { color: var(--red); }
+
+.price-sub {
+  display: flex;
+  gap: 20px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+}
+.price-sub b { color: var(--text); }
+
+/* ── Chart Card ── */
+.card-chart { padding-bottom: 14px; }
+
+.chart-wrap {
+  position: relative;
+  height: 160px;
+}
+
+/* ── Metrics Card ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.metric {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.metric-label {
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--cyan);
+  font-weight: 400;
+}
+
+/* ── Signal Card ── */
+.card-signal {
+  text-align: center;
+  border-color: var(--border2);
+}
+
+.card-signal.signal-up {
+  border-color: var(--green);
+  box-shadow: 0 0 30px var(--green-glow), inset 0 0 40px rgba(0,255,136,0.03);
+}
+.card-signal.signal-up::before { background: var(--green); width: 100%; height: 2px; }
+
+.card-signal.signal-down {
+  border-color: var(--red);
+  box-shadow: 0 0 30px var(--red-glow), inset 0 0 40px rgba(255,61,90,0.03);
+}
+.card-signal.signal-down::before { background: var(--red); width: 100%; height: 2px; }
+
+.signal-main {
+  margin: 8px 0 16px;
+}
+
+.signal-icon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 0 12px currentColor);
+  transition: all 0.4s;
+}
+
+.signal-direction {
+  font-family: var(--font-ui);
+  font-weight: 900;
+  font-size: 3.5rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  transition: color 0.4s;
+}
+
+.card-signal.signal-up .signal-direction { color: var(--green); text-shadow: 0 0 20px var(--green-glow); }
+.card-signal.signal-down .signal-direction { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+
+.signal-confidence-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.signal-conf-label {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.conf-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--bg3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.conf-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--green);
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+.card-signal.signal-down .conf-bar { background: var(--red); }
+
+.signal-conf-pct {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  min-width: 36px;
+  text-align: right;
+}
+
+.signal-reasoning {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  min-height: 64px;
+  text-align: left;
+}
+
+.signal-loader {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 0 4px;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.signal-loader.active { display: flex; }
+
+.loader-ring {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border2);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── History Card ── */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.history-empty {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  text-align: center;
+  padding: 20px 0;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  font-size: 0.75rem;
+  transition: border-color 0.2s;
+}
+.history-item:hover { border-color: var(--border2); }
+
+.history-dir {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.8rem;
+  min-width: 44px;
+}
+.history-dir.up { color: var(--green); }
+.history-dir.down { color: var(--red); }
+
+.history-price {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.history-conf {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--amber);
+}
+
+.history-time {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  text-align: right;
+}
+
+/* ── Polymarket Card ── */
+.polymarket-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.polymarket-wrap figure {
+  max-width: 100%;
+}
+
+.polymarket-wrap iframe {
+  max-width: 100%;
+  border-radius: var(--radius);
+}
+
+.pm-sentiment-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.pm-sent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  gap: 8px;
+}
+
+.pm-sent-up { background: rgba(0,255,136,0.05); }
+.pm-sent-down { background: rgba(255,61,90,0.05); }
+
+.pm-sent-label {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.pm-sent-up .pm-sent-pct { color: var(--green); font-family: var(--font-mono); font-size: 1.1rem; }
+.pm-sent-down .pm-sent-pct { color: var(--red); font-family: var(--font-mono); font-size: 1.1rem; }
+
+.pm-sent-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+}
+
+/* ── Controls Card ── */
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.control-label {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.select-interval {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  outline: none;
+  cursor: pointer;
+}
+.select-interval:focus { border-color: var(--green); }
+
+.next-update-row {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+
+#nextSignalCountdown {
+  font-family: var(--font-mono);
+  color: var(--amber);
+}
+
+/* ── Footer ── */
+.site-footer {
+  max-width: 1400px;
+  margin: 8px auto 0;
+  padding: 14px 24px 24px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  font-family: var(--font-body);
+}
+
+.site-footer a { color: var(--text-dim); text-decoration: none; }
+.site-footer a:hover { color: var(--green); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ── Flash animation on price update ── */
+@keyframes flashGreen {
+  0% { background: rgba(0,255,136,0.12); }
+  100% { background: transparent; }
+}
+@keyframes flashRed {
+  0% { background: rgba(255,61,90,0.12); }
+  100% { background: transparent; }
+}
+.flash-green { animation: flashGreen 0.6s ease-out; }
+.flash-red   { animation: flashRed   0.6s ease-out; }
+
+/* ── Signal entrance animation ── */
+@keyframes signalIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.signal-in { animation: signalIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
